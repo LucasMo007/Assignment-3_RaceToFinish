@@ -1,0 +1,40 @@
+using UnityEngine;
+
+public class SpringArmCamera : MonoBehaviour
+{
+    [Header("Target")]
+    public Transform target; // Assign the player here
+
+    [Header("Spring Arm Settings")]
+    public Vector3 offset = new Vector3(5f, 3f, 0f); // Side view offset
+    public float springArmLength = 8f;
+    public float followLag = 5f; // Lower = more lag
+
+    [Header("Collision")]
+    public float collisionBuffer = 0.3f;
+    public LayerMask collisionLayers;
+
+    private Vector3 currentVelocity;
+
+    void LateUpdate()
+    {
+        if (target == null) return;
+
+        // Desired position based on offset
+        Vector3 desiredPosition = target.position + offset.normalized * springArmLength;
+
+        // Check for collision between target and desired position
+        Vector3 direction = desiredPosition - target.position;
+        RaycastHit hit;
+        if (Physics.Raycast(target.position, direction.normalized, out hit, springArmLength, collisionLayers))
+        {
+            desiredPosition = hit.point - direction.normalized * collisionBuffer;
+        }
+
+        // Smooth follow with lag
+        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref currentVelocity, 1f / followLag);
+
+        // Always look at the player
+        transform.LookAt(target.position + Vector3.up * 1.5f);
+    }
+}

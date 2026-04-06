@@ -51,10 +51,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+   
     void FixedUpdate()
     {
-        // Movement using forces applied to Rigidbody (NOT Transform)
-        Vector3 moveDirection = new Vector3(moveX, 0f, moveZ).normalized;
+        // Get camera forward and right (ignore Y)
+        Vector3 camForward = Camera.main.transform.forward;
+        Vector3 camRight = Camera.main.transform.right;
+        camForward.y = 0f;
+        camRight.y = 0f;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        // Movement relative to camera
+        Vector3 moveDirection = (camForward * moveZ + camRight * moveX).normalized;
         Vector3 force = moveDirection * moveSpeed * speedMultiplier;
 
         rb.AddForce(force, ForceMode.Force);
@@ -74,7 +83,6 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
         }
     }
-
     // Called by SpeedZone triggers
     public void SetSpeedMultiplier(float multiplier)
     {
