@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class HingeDoor : MonoBehaviour
 {
     public int requiredKeyLevel = 1;
-    public Text popupText; // UI text for messages
+    public Text popupText; 
     public float openForce = 200f;
 
     private HingeJoint hinge;
@@ -39,10 +39,10 @@ public class HingeDoor : MonoBehaviour
         if (isOpen) return;
         isOpen = true;
 
-        // Remove hinge limits to let door swing open
+       
         hinge.useLimits = false;
 
-        // Push door open
+      
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.AddForce(transform.forward * openForce);
 

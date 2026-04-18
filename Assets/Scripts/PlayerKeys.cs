@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class PlayerKeys : MonoBehaviour
 {
     public int currentKeyLevel = 0;
-    public Text keyText; // UI text to show key status
+    public Text keyText; 
 
     public void AddKey(int level)
     {

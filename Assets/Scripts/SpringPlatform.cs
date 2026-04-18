@@ -9,13 +9,13 @@ public class SpringPlatform : MonoBehaviour
 
     void Start()
     {
-        // Create an anchor point at current position
+        
         GameObject anchor = new GameObject("SpringAnchor");
         anchor.transform.position = transform.position;
         Rigidbody anchorRb = anchor.AddComponent<Rigidbody>();
         anchorRb.isKinematic = true;
 
-        // Setup spring joint
+       
         springJoint = gameObject.AddComponent<SpringJoint>();
         springJoint.connectedBody = anchorRb;
         springJoint.spring = spring;

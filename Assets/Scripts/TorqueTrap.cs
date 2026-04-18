@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TorqueTrap : MonoBehaviour
 {
-    public Vector3 torqueAxis = Vector3.up; // Rotation axis
+    public Vector3 torqueAxis = Vector3.up; 
     public float torqueForce = 50f;
 
     private Rigidbody rb;

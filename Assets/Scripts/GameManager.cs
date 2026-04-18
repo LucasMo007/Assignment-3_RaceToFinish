@@ -5,11 +5,14 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [Header("Timer")]
-    public float totalTime = 120f; // 2 minutes
+    public float totalTime = 120f;
     public Text timerText;
 
+    [Header("Game Over")]
+    public GameObject gameOverPanel;
+
     [Header("Cheat Teleport Points")]
-    public Transform[] teleportPoints; // Assign in Inspector: F1=trap1, F2=trap2, etc.
+    public Transform[] teleportPoints;
 
     private Transform player;
     private Rigidbody playerRb;
@@ -21,29 +24,31 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         playerRb = player.GetComponent<Rigidbody>();
         timeRemaining = totalTime;
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
     }
 
     void Update()
     {
         if (gameOver) return;
 
-        // Timer countdown
+      
         timeRemaining -= Time.deltaTime;
         if (timeRemaining <= 0)
         {
             timeRemaining = 0;
             gameOver = true;
-            // Restart or show game over
-            Debug.Log("Time's up!");
+            ShowGameOver();
         }
 
-        // Update UI
+     
         int minutes = Mathf.FloorToInt(timeRemaining / 60);
         int seconds = Mathf.FloorToInt(timeRemaining % 60);
         if (timerText != null)
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 
-        // Cheat teleport keys F1-F10
+      
         for (int i = 0; i < teleportPoints.Length && i < 10; i++)
         {
             if (Input.GetKeyDown(KeyCode.F1 + i) && teleportPoints[i] != null)
@@ -53,5 +58,24 @@ public class GameManager : MonoBehaviour
                 player.position = teleportPoints[i].position;
             }
         }
+    }
+
+    void ShowGameOver()
+    {
+        Time.timeScale = 0f;
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void QuitToMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Mainmenu");
     }
 }

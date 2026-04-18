@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SpeedZone : MonoBehaviour
 {
-    public float speedMultiplier = 2f; // >1 for speed up, <1 for slow down
+    public float speedMultiplier = 2f; 
 
     void OnTriggerEnter(Collider other)
     {
